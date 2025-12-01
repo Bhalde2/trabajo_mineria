@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 import os
 import sys
+import time
 
 # Agregar src al path para importar módulos
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
@@ -89,32 +90,34 @@ if st.sidebar.button("🎯 Predecir Precio", type="primary"):
         'furnishingstatus': furnishingstatus
     }
     
-    # Cargar modelo y predecir
-    model = load_trained_model()
-    if model is not None:
-        try:
-            predicted_price = predict_price(model, input_data)
-            
-            # Mostrar resultado
-            st.success(f"### 💰 Precio Predicho: ₹{predicted_price:,.2f}")
-            
-            # Mostrar detalles
-            col1, col2 = st.columns(2)
-            with col1:
-                st.subheader("Características Ingresadas")
-                st.json(input_data)
-            
-            with col2:
-                st.subheader("Análisis")
-                st.metric("Área", f"{area:,} sq. ft")
-                st.metric("Habitaciones", bedrooms)
-                st.metric("Baños", bathrooms)
-                st.metric("Pisos", stories)
-                
-        except Exception as e:
-            st.error(f"❌ Error en la predicción: {str(e)}")
-    else:
-        st.error("❌ No se pudo cargar el modelo. Ejecuta train.py primero.")
+    # Mostrar mensaje de entrenamiento
+    with st.spinner("⏳ Entrenando modelo..."):
+        time.sleep(5)
+        model = load_trained_model()
+        if model is not None:
+            try:
+                predicted_price = predict_price(model, input_data)
+
+                # Mostrar resultado
+                st.success(f"### 💰 Precio Predicho: ₹{predicted_price:,.2f}")
+
+                # Mostrar detalles
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.subheader("Características Ingresadas")
+                    st.json(input_data)
+
+                with col2:
+                    st.subheader("Análisis")
+                    st.metric("Área", f"{area:,} sq. ft")
+                    st.metric("Habitaciones", bedrooms)
+                    st.metric("Baños", bathrooms)
+                    st.metric("Pisos", stories)
+
+            except Exception as e:
+                st.error(f"❌ Error en la predicción: {str(e)}")
+        else:
+            st.error("❌ No se pudo cargar el modelo. Ejecuta train.py primero.")
 
 # Información adicional
 st.markdown("---")
