@@ -1,5 +1,10 @@
 import pandas as pd
 import joblib
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 from preprocess import load_data
 
 def load_trained_model(model_path='../models/model.pkl'):
@@ -13,7 +18,7 @@ def load_trained_model(model_path='../models/model.pkl'):
 def predict_price(model, input_data):
     """Realizar predicción con el modelo"""
     try:
-        # Convertir input a DataFrame
+        # Convertir input a DataFrameS
         if isinstance(input_data, dict):
             input_df = pd.DataFrame([input_data])
         else:
@@ -44,3 +49,4 @@ if __name__ == "__main__":
     
     price = predict_price(model, sample_data)
     print(f"💰 Precio predicho: ₹{price:,.2f}")
+
