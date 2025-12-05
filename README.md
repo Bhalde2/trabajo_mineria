@@ -1,95 +1,85 @@
-# Housing Price Prediction - Proyecto de Machine Learning
+# 🏡 Housing Price Prediction - Proyecto de Machine Learning
+
+![Python](https://img.shields.io/badge/Python-3.9%2B-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.68-green)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.2-red)
+![Status](https://img.shields.io/badge/Status-Terminado-success)
+
+> **Sistema inteligente para la valoración inmobiliaria basado en Machine Learning.**
+
+---
+
+## 📚 Documentación
+Para ver la guía detallada de uso, escenarios de prueba y explicación paso a paso, consulta:
+
+### [📘 CLIC AQUÍ PARA VER EL MANUAL DE USUARIO](docs/MANUAL_USUARIO.md)
+
+---
 
 ## 📋 Descripción
-Sistema completo para **predecir precios de viviendas** utilizando Machine Learning, una **API REST** creada con FastAPI y un **dashboard interactivo** construido con Streamlit.  
-El proyecto incluye análisis exploratorio (EDA), preprocesamiento, entrenamiento, pruebas y despliegue de un modelo de regresión.
+Este proyecto implementa un flujo completo de **MLOps** para predecir precios de viviendas. Integra un modelo de regresión entrenado, servido a través de una **API REST** de alto rendimiento (FastAPI) y consumido por una interfaz amigable (**Dashboard**) construida en Streamlit.
+
+El sistema abarca desde el análisis exploratorio de datos (EDA) hasta el despliegue del modelo.
+
+## 🎯 Problema y Solución
+
+| ⚠️ El Problema | ✅ La Solución |
+| :--- | :--- |
+| Tasaciones subjetivas e inexactas. | **Modelo Random Forest** robusto y objetivo. |
+| Variabilidad del mercado difícil de rastrear. | **API en tiempo real** para consultas instantáneas. |
+| Pérdida de oportunidades de inversión. | **Dashboard interactivo** para simulación de escenarios. |
 
 ---
 
-## 🎯 2. Problema a Resolver
+## 🚀 Inicio Rápido
 
-Los precios de viviendas suelen ser difíciles de estimar debido a:
+Si deseas ejecutar este proyecto en tu máquina local:
 
-- Variaciones de mercado  
-- Diferencias en ubicación  
-- Características estructurales diversas  
-- Subjetividad en la valoración humana  
+### 1. Instalación
 
-Esto puede generar:
+```
+# Clonar repositorio
+git clone [https://github.com/Bhalde2/trabajo_mineria.git](https://github.com/Bhalde2/trabajo_mineria.git)
+cd trabajo_mineria
 
-- Tasaciones inexactas  
-- Pérdida de oportunidades de inversión  
-- Decisiones mal informadas por parte de compradores o vendedores
+# Instalar dependencias
+pip install -r requirements.txt
 
----
-## 🛠️ Solución
-Para resolver el problema, se implementó un sistema automatizado basado en Machine Learning, compuesto por:
-- **Modelo**: Random Forest Regressor
-- **API**: FastAPI para predicciones en tiempo real
-- **Dashboard**: Streamlit para interfaz de usuario
-- **Métricas**: MAE ~₹500,000, R² ~0.85
+```
 
-## 🧹 Preprocesamiento de Datos
+### 2. Ejecución
+Puedes levantar los servicios en terminales separadas:
 
-El preprocesamiento es una etapa fundamental del proyecto, ya que permite preparar los datos correctamente antes de entrenar el modelo de Machine Learning. En este proyecto se utilizan las librerías pandas y numpy para el tratamiento de los datos.
+## Terminal 1 (API):
 
-Las principales tareas realizadas en esta etapa son:
+python src/app.py
+# Disponible en: http://localhost:8001/docs
 
-✅ Carga de datos
+## Terminal 2 (Dashboard):
 
-Se cargan los datos desde el dataset de viviendas, donde cada registro representa una propiedad con diferentes atributos como:
+python -m streamlit run dashboard/app.py
+# Disponible en: http://localhost:8501
 
-Superficie
+## 🧹 Preprocesamiento de Datos (Pipeline)
+El pipeline de datos utiliza pandas y numpy para asegurar la calidad de la información antes del entrenamiento:
 
-Número de habitaciones
+📥 Carga e Ingesta: Lectura del dataset crudo con atributos de superficie, habitaciones y servicios.
 
-Presencia de estacionamiento
+🧼 Limpieza: Imputación de valores nulos y corrección de inconsistencias.
 
-Ubicación
+🔢 Transformación: Aplicación de One-Hot Encoding para variables categóricas (ej. Aire Acondicionado: Sí/No).
 
-Servicios adicionales, entre otros.
-
-✅ Limpieza de datos
-
-Se realiza una depuración del dataset para:
-
-Eliminar valores nulos.
-
-Corregir datos inconsistentes.
-
-Asegurar que cada variable tenga el tipo de dato correcto.
-
-Esto evita errores durante el entrenamiento y mejora la calidad de las predicciones.
-
-✅ Transformación de variables categóricas
-
-Las variables categóricas (por ejemplo, si la vivienda tiene estacionamiento o no) son transformadas a valores numéricos mediante One-Hot Encoding, permitiendo que el modelo las interprete correctamente.
-
-✅ Separación de los datos
-
-Finalmente, los datos se dividen en:
-
-Variables de entrada (X)
-
-Variable objetivo (y) → Precio de la vivienda
-
-Y posteriormente se separan en:
-
-Conjunto de entrenamiento
-
-Conjunto de prueba
-
-Esto permite evaluar el rendimiento real del modelo.
+✂️ Split de Datos: División estratégica en conjuntos de entrenamiento (Train) y validación (Test).
 
 ## 🌲 Análisis del Modelo
 
 El algoritmo utilizado es Random Forest Regressor, implementado con la librería scikit-learn.
 
-🔍 Descripción del modelo
+## 🔍 Descripción del modelo
 
 Random Forest es un modelo compuesto por múltiples árboles de decisión que trabajan de forma conjunta. Cada árbol genera una predicción y el resultado final corresponde al promedio de todas ellas.
 
-⚙️ Parámetros principales del modelo
+## ⚙️ Parámetros principales del modelo
 
 El modelo se configuró con los siguientes parámetros:
 
@@ -99,7 +89,7 @@ n_jobs = -1 → Se emplean todos los núcleos del procesador disponibles.
 
 random_state = 42 → Permite que los resultados sean reproducibles.
 
-✅ Justificación del uso de Random Forest
+## ✅ Justificación del uso de Random Forest
 
 Este modelo fue elegido debido a que:
 
@@ -137,10 +127,20 @@ Indica el error promedio entre el valor real y el valor predicho.
 R² (Coeficiente de Determinación):
 Mide qué tan bien el modelo explica el comportamiento de los precios.
 
-💾 Guardado del modelo
+## 💾 Guardado del modelo
 
 Una vez entrenado, el modelo se guarda utilizando la librería joblib en la carpeta models/, lo que permite su reutilización en:
 
 La API REST desarrollada con FastAPI.
 
 El dashboard interactivo desarrollado con Streamlit.
+
+## 📂 Estructura del Proyecto
+
+├── dashboard/       # Código de la interfaz Streamlit
+├── docs/            # Documentación y Manual de Usuario
+├── models/          # Modelos entrenados (.pkl/.joblib)
+├── src/             # Código fuente (API, Entrenamiento, EDA)
+├── tests/           # Tests unitarios con Pytest
+├── requirements.txt # Dependencias del proyecto
+└── README.md        # Este archivo
