@@ -13,7 +13,7 @@
 Para ver la guía detallada de uso, escenarios de prueba y explicación paso a paso, consulta:
 
 ### [📘 CLIC AQUÍ PARA VER EL MANUAL DE USUARIO](/docs/pruebas/MANUAL_USUARIO.md)
-)
+
 
 ---
 
