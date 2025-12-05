@@ -12,7 +12,9 @@
 ## 📚 Documentación
 Para ver la guía detallada de uso, escenarios de prueba y explicación paso a paso, consulta:
 
-### [📘 CLIC AQUÍ PARA VER EL MANUAL DE USUARIO](docs/MANUAL_USUARIO.md)
+### [📘 CLIC AQUÍ PARA VER EL MANUAL DE USUARIO](trabajo_mineria/docs/pruebas
+/MANUAL_USUARIO.md)
+)
 
 ---
 
