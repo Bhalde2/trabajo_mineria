@@ -61,6 +61,14 @@ python src/app.py
 python -m streamlit run dashboard/app.py
 # Disponible en: http://localhost:8501
 
+## 🧪 Tests
+8 tests unitarios con Pytest. 5 corren sin servicios levantados; los 3 de `tests/test_api.py` necesitan la API viva en el puerto 8001.
+
+```bash
+# Con la API corriendo en otra terminal:
+python -m pytest tests/ -v
+```
+
 ## 🧹 Preprocesamiento de Datos (Pipeline)
 El pipeline de datos utiliza pandas y numpy para asegurar la calidad de la información antes del entrenamiento:
 
@@ -102,7 +110,7 @@ Permite trabajar con datos numéricos y categóricos.
 
 Entrega buenas predicciones sin necesidad de ajustes complejos.
 
-En este proyecto se obtuvo un coeficiente R² cercano a 0.85, lo cual indica un alto nivel de precisión.
+En este proyecto se obtuvo un R² de ~0.83, lo cual indica un alto nivel de precisión.
 
 ## 🏋️ Entrenamiento del Modelo
 
@@ -139,8 +147,10 @@ El dashboard interactivo desarrollado con Streamlit.
 ## 📂 Estructura del Proyecto
 
 ├── dashboard/       # Código de la interfaz Streamlit
+├── data/            # Dataset generado (Housing.csv)
 ├── docs/            # Documentación y Manual de Usuario
 ├── models/          # Modelos entrenados (.pkl/.joblib)
+├── notebooks/       # Notebook de EDA
 ├── src/             # Código fuente (API, Entrenamiento, EDA)
 ├── tests/           # Tests unitarios con Pytest
 ├── requirements.txt # Dependencias del proyecto

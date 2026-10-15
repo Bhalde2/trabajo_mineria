@@ -2,7 +2,7 @@
 ## Sistema de Predicción de Precios de Viviendas
 
 ### 1. Introducción
-Este documento sirve como guía oficial para la instalación, despliegue y validación del sistema de Machine Learning diseñado para la predicción de precios inmobiliarios. [cite_start]El sistema permite realizar análisis exploratorios, entrenar modelos predictivos y servir predicciones mediante una API y un Dashboard interactivo[cite: 3].
+Este documento sirve como guía oficial para la instalación, despliegue y validación del sistema de Machine Learning diseñado para la predicción de precios inmobiliarios. El sistema permite realizar análisis exploratorios, entrenar modelos predictivos y servir predicciones mediante una API y un Dashboard interactivo.
 
 ### 2. Instalación y Configuración Inicial
 
@@ -16,12 +16,12 @@ Este documento sirve como guía oficial para la instalación, despliegue y valid
 1.  **Clonar el repositorio:**
     Abre tu terminal en la carpeta donde deseas guardar el proyecto:
     ```bash
-    git clone [https://github.com/Bhalde2/trabajo_mineria.git](https://github.com/Bhalde2/trabajo_mineria.git)
+    git clone https://github.com/Bhalde2/trabajo_mineria.git
     cd trabajo_mineria
     ```
 
 2.  **Instalar dependencias:**
-    [cite_start]Instala todas las librerías necesarias listadas en `requirements.txt`[cite: 5]:
+    Instala todas las librerías necesarias listadas en `requirements.txt`:
     ```bash
     pip install -r requirements.txt
     ```
@@ -33,7 +33,7 @@ Este documento sirve como guía oficial para la instalación, despliegue y valid
 El proyecto se compone de 4 módulos principales. Se recomienda ejecutarlos en este orden:
 
 #### A. Generación de Datos y EDA (Análisis Exploratorio)
-[cite_start]Este paso crea el dataset base y genera los gráficos estadísticos en la carpeta `docs/pruebas/`[cite: 6, 10].
+Este paso crea el dataset base y genera los gráficos estadísticos en la carpeta `docs/pruebas/`.
 
 * **Opción 1: Comando Manual**
     ```bash
@@ -42,10 +42,10 @@ El proyecto se compone de 4 módulos principales. Se recomienda ejecutarlos en e
     ```
 
 * **Opción 2: Desde el Dashboard**
-    Una vez iniciado el Dashboard, puedes usar el botón **"🔄 Ejecutar Nuevo Análisis (EDA)"** en la barra lateral para regenerar los gráficos automáticamente.
+    Una vez iniciado el Dashboard, puedes usar el botón **"📊 Ejecutar Análisis Exploratorio de Datos (EDA)"** al final de la página para regenerar los gráficos automáticamente.
 
 #### B. Entrenamiento del Modelo
-[cite_start]Entrena el algoritmo (Random Forest) con los datos procesados[cite: 14].
+Entrena el algoritmo (Random Forest) con los datos procesados.
 
 * **Comando:**
     ```bash
@@ -53,39 +53,40 @@ El proyecto se compone de 4 módulos principales. Se recomienda ejecutarlos en e
     ```
 
 * **Métricas de Desempeño Esperadas:**
-    [cite_start]El sistema debería reportar métricas cercanas a[cite: 19, 20]:
-    * **MAE (Error Absoluto Medio):** ~1,021,546.04
-    * **R2 Score:** ~0.61
+    El sistema debería reportar métricas cercanas a:
+    * **MAE (Error Absoluto Medio):** ~948,270
+    * **R2 Score:** ~0.83
 
 #### C. Iniciar la API (Backend)
-[cite_start]Levanta el servidor FastAPI que procesa las predicciones[cite: 21, 23].
+Levanta el servidor FastAPI que procesa las predicciones.
 
 * **Comando (Terminal 1):**
     ```bash
     python src/app.py
     ```
-* [cite_start]**URL de Documentación:** `http://localhost:8001/docs` [cite: 24]
+* **URL de Documentación:** `http://localhost:8001/docs`
 * **Endpoints Clave:**
-    * [cite_start]`GET /health`: Verifica el estado del servicio[cite: 29].
-    * [cite_start]`POST /predict`: Realiza predicciones de precios[cite: 31].
+    * `GET /health`: Verifica el estado del servicio.
+    * `POST /predict`: Realiza predicciones de precios.
+    * `POST /run-eda`: Ejecuta el análisis exploratorio de datos.
 
 #### D. Iniciar el Dashboard (Frontend)
-[cite_start]Lanza la interfaz gráfica Streamlit para el usuario final[cite: 32, 34].
+Lanza la interfaz gráfica Streamlit para el usuario final.
 
 * **Comando (Terminal 2):**
     ```bash
     python -m streamlit run dashboard/app.py
     ```
-* [cite_start]**URL de Acceso:** `http://localhost:8501` [cite: 35]
+* **URL de Acceso:** `http://localhost:8501`
 
 ---
 
 ### 4. Escenarios de Validación (Demo)
 
-[cite_start]Para verificar la lógica del modelo, utilice los siguientes escenarios de prueba en el Dashboard[cite: 53, 68].
+Para verificar la lógica del modelo, utilice los siguientes escenarios de prueba en el Dashboard.
 
 #### 🏠 Escenario 1: Casa de Lujo (High-End)
-[cite_start]Configure los controles con los siguientes valores [cite: 54-66]:
+Configure los controles con los siguientes valores:
 
 | Parámetro | Valor a Seleccionar |
 | :--- | :--- |
@@ -97,10 +98,10 @@ El proyecto se compone de 4 módulos principales. Se recomienda ejecutarlos en e
 | **Extras** | **SÍ** a todo (Carretera, Invitados, Sótano, Calentador, AC, Área Pref.) |
 | **Amueblado** | Furnished (Amueblado) |
 
-* [cite_start]**💰 Predicción Esperada:** Entre **₹6,000,000 y ₹8,000,000**[cite: 67].
+* **💰 Predicción Esperada:** Entre **₹9,000,000 y ₹12,000,000** (valor real con el modelo actual: ~₹10,600,000).
 
 #### 🏠 Escenario 2: Casa Económica (Budget)
-[cite_start]Configure los controles con los siguientes valores [cite: 69-81]:
+Configure los controles con los siguientes valores:
 
 | Parámetro | Valor a Seleccionar |
 | :--- | :--- |
@@ -112,32 +113,32 @@ El proyecto se compone de 4 módulos principales. Se recomienda ejecutarlos en e
 | **Extras** | **NO** a todo |
 | **Amueblado** | Unfurnished (Sin amueblar) |
 
-* [cite_start]**💰 Predicción Esperada:** Entre **₹2,000,000 y ₹4,000,000**[cite: 82].
+* **💰 Predicción Esperada:** Entre **₹2,000,000 y ₹4,000,000** (valor real con el modelo actual: ~₹3,240,000).
 
 ---
 
 ### 5. Verificación Técnica (QA)
 
-[cite_start]Para garantizar la integridad del código, ejecute la suite de tests unitarios[cite: 40].
+Para garantizar la integridad del código, ejecute la suite de tests unitarios.
 
 * **Comando:**
     ```bash
     python -m pytest tests/ -v
     ```
-    [cite_start]*(Nota: Asegúrese de respetar los espacios en el comando)*[cite: 42].
+    *(Nota: los 3 tests de `tests/test_api.py` requieren la API corriendo en el puerto 8001; sin ella fallan por `ConnectionError`)*.
 
 * **Resultado Requerido:**
-    [cite_start]La consola debe mostrar **8 passed** (8 pruebas pasadas exitosamente) en color verde[cite: 45, 100].
+    La consola debe mostrar **8 passed** (8 pruebas pasadas exitosamente) en color verde.
 
 ---
 
 ### 6. Checklist de Entrega
 
-[cite_start]Verifique los siguientes puntos antes de finalizar[cite: 96]:
+Verifique los siguientes puntos antes de finalizar:
 
-- [ ] [cite_start]API FastAPI funcionando en puerto 8001[cite: 97].
-- [ ] [cite_start]Dashboard Streamlit funcionando en puerto 8501[cite: 98].
-- [ ] [cite_start]Modelo entrenado con MAE ~1.02M[cite: 99].
-- [ ] [cite_start]Tests unitarios 8/8 pasando[cite: 100].
-- [ ] [cite_start]EDA completado con gráficos en carpeta `docs`[cite: 101].
-- [ ] [cite_start]Evidencias visuales capturadas (Screenshots/Video)[cite: 104].
+- [ ] API FastAPI funcionando en puerto 8001.
+- [ ] Dashboard Streamlit funcionando en puerto 8501.
+- [ ] Modelo entrenado con MAE ~₹948,270 y R² ~0.83.
+- [ ] Tests unitarios 8/8 pasando.
+- [ ] EDA completado con gráficos en carpeta `docs/pruebas`.
+- [ ] Evidencias visuales capturadas (Screenshots/Video).

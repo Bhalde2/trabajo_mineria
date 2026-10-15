@@ -162,9 +162,9 @@ st.markdown("---")
 st.subheader("📚 Información del Modelo")
 st.markdown("""
 - **Algoritmo**: Random Forest Regressor  
-- **Precisión**: MAE ~₹1,021,546  
-- **R² Score**: 0.61  
-- **Dataset**: 545 propiedades residenciales  
+- **Precisión**: MAE ~₹948,270  
+- **R² Score**: 0.83  
+- **Dataset**: 1000 propiedades residenciales  
 - **Características**: 12 variables predictoras  
 """)
 

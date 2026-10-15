@@ -6,6 +6,9 @@ import os
 import subprocess
 import sys
 
+# La consola de Windows usa cp1252 y revienta con los emojis; los prints van en utf-8.
+sys.stdout.reconfigure(encoding="utf-8")
+
 app = FastAPI(
     title="Housing Price Prediction API",
     description="API para predecir precios de viviendas",
@@ -135,19 +138,21 @@ def predict(features: HouseFeatures):
 @app.post("/run-eda")
 def run_eda():
     try:
-        # Ruta correcta de EDA.py (dentro de src/)
-        script_path = os.path.join(os.path.dirname(__file__), "..", "src", "EDA.py")
-        script_path = os.path.abspath(script_path)
+        # El archivo real es src/eda.py en minúsculas; en Linux el nombre importa.
+        script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "eda.py"))
 
-        print(f"▶ Ejecutando EDA.py desde: {script_path}")
+        print(f"▶ Ejecutando eda.py desde: {script_path}")
 
         if not os.path.isfile(script_path):
-            raise FileNotFoundError(f"EDA.py no encontrado en: {script_path}")
+            raise FileNotFoundError(f"eda.py no encontrado en: {script_path}")
 
         result = subprocess.run(
             [sys.executable, script_path],
             capture_output=True,
-            text=True
+            text=True,
+            encoding="utf-8",
+            # Sin esto el hijo imprime en cp1252 y los acentos llegan corruptos al dashboard.
+            env={**os.environ, "PYTHONIOENCODING": "utf-8"}
         )
 
         return {
