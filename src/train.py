@@ -15,7 +15,7 @@ def main():
     X = df.drop('price', axis=1)
     y = df['price']
     
-    # Encoding básico (sin preprocess.py)
+    # Encoding básico: el modelo queda atado a este esquema (drop_first)
     X_encoded = pd.get_dummies(X, drop_first=True)
     print(f"✅ Features después de encoding: {X_encoded.shape[1]} columnas")
     

@@ -62,12 +62,17 @@ python -m streamlit run dashboard/app.py
 # Disponible en: http://localhost:8501
 
 ## 🧪 Tests
-8 tests unitarios con Pytest. 5 corren sin servicios levantados; los 3 de `tests/test_api.py` necesitan la API viva en el puerto 8001.
+16 pruebas automatizadas: 3 de contrato contra la API levantada (`tests/test_api.py`, requieren el puerto 8001) y 13 que corren sin servicios (calidad de datos, módulo de predicción y la API en proceso con `TestClient`).
 
 ```bash
-# Con la API corriendo en otra terminal:
+# Las 3 de test_api.py necesitan la API corriendo en otra terminal
 python -m pytest tests/ -v
+
+# Cobertura de src/
+python -m pytest tests/ --cov=src --cov-report=term-missing
 ```
+
+Cobertura actual: **36%** de `src/` (74% `app.py`, 71% `predict.py`; `eda.py`, `train.py` y `generate_dataset.py` se ejecutan como scripts, no se importan en las pruebas).
 
 ## 🧹 Preprocesamiento de Datos (Pipeline)
 El pipeline de datos utiliza pandas y numpy para asegurar la calidad de la información antes del entrenamiento:

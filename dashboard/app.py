@@ -1,13 +1,6 @@
 import streamlit as st
-import pandas as pd
-import joblib
 import os
-import sys
-import time
 import requests
-
-# Agregar src al path para importar módulos
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 # =============================
 # CONFIGURACIÓN DEL DASHBOARD
@@ -21,44 +14,7 @@ st.set_page_config(
 st.title("🏠 Housing Price Prediction")
 st.markdown("Predice el precio de viviendas basado en sus características")
 
-API_URL = "http://localhost:8001"
-
-
-# =============================
-# FUNCIÓN PARA CARGAR MODELO
-# =============================
-def load_trained_model():
-    """Cargar modelo entrenado"""
-    try:
-        model_path = os.path.join(os.path.dirname(__file__), '..', 'models', 'model.pkl')
-        model = joblib.load(model_path)
-        return model
-    except Exception as e:
-        st.error(f"Error cargando modelo: {e}")
-        return None
-
-
-# =============================
-# FUNCIÓN DE PREDICCIÓN
-# =============================
-def predict_price(model, input_data):
-    """Realizar predicción con el modelo"""
-    try:
-        input_df = pd.DataFrame([input_data])
-        input_encoded = pd.get_dummies(input_df, drop_first=True)
-
-        if hasattr(model, 'feature_names_in_'):
-            for col in model.feature_names_in_:
-                if col not in input_encoded.columns:
-                    input_encoded[col] = 0
-
-            input_encoded = input_encoded[model.feature_names_in_]
-
-        prediction = model.predict(input_encoded)
-        return prediction[0]
-
-    except Exception as e:
-        raise Exception(f"Error en predicción: {str(e)}")
+API_URL = os.environ.get("API_URL", "http://localhost:8001")
 
 
 # =============================
@@ -100,30 +56,29 @@ if st.sidebar.button("🎯 Predecir Precio", type="primary"):
         'furnishingstatus': furnishingstatus
     }
 
-    with st.spinner("🔄 Cargando modelo y prediciendo..."):
-        time.sleep(1)
-        model = load_trained_model()
+    with st.spinner("🔄 Consultando la API..."):
+        try:
+            response = requests.post(f"{API_URL}/predict", json=input_data, timeout=30)
+            response.raise_for_status()
+            predicted_price = response.json()["predicted_price"]
+        except requests.exceptions.ConnectionError:
+            st.error(f"❌ No se pudo conectar con la API en {API_URL}. Levántala con `python src/app.py`.")
+        except Exception as e:
+            st.error(f"❌ Error en la predicción: {e}")
+        else:
+            st.success(f"### 💰 Precio Predicho: ₹{predicted_price:,.2f}")
 
-        if model:
-            try:
-                predicted_price = predict_price(model, input_data)
+            col1, col2 = st.columns(2)
+            with col1:
+                st.subheader("Características Ingresadas")
+                st.json(input_data)
 
-                st.success(f"### 💰 Precio Predicho: ₹{predicted_price:,.2f}")
-
-                col1, col2 = st.columns(2)
-                with col1:
-                    st.subheader("Características Ingresadas")
-                    st.json(input_data)
-
-                with col2:
-                    st.subheader("Análisis")
-                    st.metric("Área", f"{area:,} sq. ft")
-                    st.metric("Habitaciones", bedrooms)
-                    st.metric("Baños", bathrooms)
-                    st.metric("Pisos", stories)
-
-            except Exception as e:
-                st.error(f"❌ Error en la predicción: {e}")
+            with col2:
+                st.subheader("Análisis")
+                st.metric("Área", f"{area:,} sq. ft")
+                st.metric("Habitaciones", bedrooms)
+                st.metric("Baños", bathrooms)
+                st.metric("Pisos", stories)
 
 
 # =============================

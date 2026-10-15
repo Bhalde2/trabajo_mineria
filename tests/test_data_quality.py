@@ -1,12 +1,7 @@
 ﻿import unittest
 import pandas as pd
-import sys
-import os
 
-# Agregar src al path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
-
-class TestPreprocess(unittest.TestCase):
+class TestDataQuality(unittest.TestCase):
     
     def test_load_data(self):
         """Test carga de datos"""

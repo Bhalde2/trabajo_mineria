@@ -8,7 +8,7 @@ Proyecto ML: predicción de precios de viviendas (Random Forest) -> API FastAPI 
 - **Ejecutar siempre desde la raíz del repo**: scripts y tests usan rutas relativas (`data/Housing.csv`, `models/model.pkl`, `docs/pruebas/`).
 - API: `py -3.13 src/app.py` -> puerto **8001**
 - Dashboard: `py -3.13 -m streamlit run dashboard/app.py` -> puerto 8501
-- Tests offline: `py -3.13 -m pytest tests/test_preprocess.py tests/test_predict.py -q`
+- Tests offline: `py -3.13 -m pytest tests/ --ignore=tests/test_api.py -q` (13 tests). Cobertura: `py -3.13 -m pytest tests/ --cov=src --cov-report=term-missing` (36% total; `app.py` 74%, `predict.py` 71%, `eda/train/generate_dataset` 0% porque corren como scripts).
 - Tests con API: `tests/test_api.py` exige la API viva en `localhost:8001`. Sin ella falla con `ConnectionError`; no es un bug del código.
 
 ## Gotchas que rompen el flujo
@@ -18,13 +18,13 @@ Proyecto ML: predicción de precios de viviendas (Random Forest) -> API FastAPI 
 - Hay `.gitignore`; los `__pycache__/*.pyc` que estaban commiteados ya se quitaron del índice.
 - `POST /run-eda` apunta a `src/eda.py` (minúsculas, correcto para Linux). Antes buscaba `src/EDA.py`.
 - **Consola Windows = cp1252**: cualquier print con emoji revienta (`UnicodeEncodeError`). `src/app.py` hace `sys.stdout.reconfigure(encoding="utf-8")` al importar; `/run-eda` pasa `PYTHONIOENCODING=utf-8` al hijo. Si agregás prints a `src/eda.py` o `src/train.py`, no los toques sin ese reconfigure.
-- El puerto 8001 está duplicado en `src/app.py`, `dashboard/app.py` y `tests/test_api.py`. Cambiar en los tres.
+- El puerto 8001 sale de `PORT` en `src/app.py` y de `API_URL` en `dashboard/app.py` y `tests/test_api.py`. Default 8001 en los tres.
 
 ## Arquitectura real (distinta a la que sugiere el README)
 
 - Flujo efectivo: `generate_dataset.py` -> `train.py` -> `models/model.pkl` -> `src/app.py` / `dashboard/app.py`.
-- **`src/preprocess.py` no participa en el pipeline.** `train.py` hace su propio `pd.get_dummies` inline y **no escala**; el `StandardScaler` de `preprocess.py` nunca se aplica. Cualquier cambio de preprocessing exige reentrenar `model.pkl`. El único que lo consume es `tests/test_preprocess.py`.
-- **El dashboard no usa la API para predecir**: carga `models/model.pkl` directo con joblib. La API solo se usa para `/run-eda`.
+- **`src/preprocess.py` fue borrado**: nada lo usaba (ni `train.py`, ni la API, ni los tests) y escalarle datos a Random Forest no aporta nada. `train.py` hace su propio `pd.get_dummies(drop_first=True)`. Cualquier cambio de encoding exige reentrenar `model.pkl` y resincronizar README + manual + panel del dashboard.
+- **El dashboard ya no carga `model.pkl`**: predice vía `POST /predict`. Si la API no está arriba muestra error y listo; no hay fallback local. `models/model.pkl` solo lo leen `src/app.py` y `src/predict.py`.
 - Encoding en predicción: se hace `get_dummies` sobre una sola fila y luego se rellenan con 0 las columnas de `model.feature_names_in_`, que fijan el orden. No mandar DataFrames crudos al modelo.
 
 ## Métricas (verificadas contra el modelo commiteado, 1000 filas)

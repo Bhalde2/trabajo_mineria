@@ -1,10 +1,11 @@
 import unittest
 import requests
 import time
+import os
 
 class TestAPI(unittest.TestCase):
-    
-    BASE_URL = "http://localhost:8001"  # PUERTO CORREGIDO
+
+    BASE_URL = os.environ.get("API_URL", "http://localhost:8001")
     
     def test_health_endpoint(self):
         """Test endpoint de salud"""

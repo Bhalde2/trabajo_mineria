@@ -9,6 +9,8 @@ import sys
 # La consola de Windows usa cp1252 y revienta con los emojis; los prints van en utf-8.
 sys.stdout.reconfigure(encoding="utf-8")
 
+PORT = int(os.environ.get("PORT", 8001))
+
 app = FastAPI(
     title="Housing Price Prediction API",
     description="API para predecir precios de viviendas",
@@ -169,4 +171,4 @@ def run_eda():
 # ============================
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=PORT)
