@@ -128,7 +128,13 @@ Para garantizar la integridad del código, ejecute la suite de tests unitarios.
     *(Nota: los 3 tests de `tests/test_api.py` requieren la API corriendo en el puerto 8001; sin ella fallan por `ConnectionError`)*.
 
 * **Resultado Requerido:**
-    La consola debe mostrar **8 passed** (8 pruebas pasadas exitosamente) en color verde.
+    La consola debe mostrar **16 passed** (16 pruebas pasadas exitosamente) en color verde.
+
+* **Cobertura:**
+    ```bash
+    python -m pytest tests/ --cov=src --cov-report=term-missing
+    ```
+    Cobertura actual: **36%** de `src/` (74% en `app.py`, 71% en `predict.py`).
 
 ---
 
@@ -139,6 +145,6 @@ Verifique los siguientes puntos antes de finalizar:
 - [ ] API FastAPI funcionando en puerto 8001.
 - [ ] Dashboard Streamlit funcionando en puerto 8501.
 - [ ] Modelo entrenado con MAE ~₹948,270 y R² ~0.83.
-- [ ] Tests unitarios 8/8 pasando.
+- [x] Tests unitarios 16/16 pasando (36% de cobertura sobre `src/`).
 - [ ] EDA completado con gráficos en carpeta `docs/pruebas`.
-- [ ] Evidencias visuales capturadas (Screenshots/Video).
+- [x] Evidencias visuales capturadas en `docs/pruebas/evidencias/` (escenarios 1 y 2 + salida del EDA).
